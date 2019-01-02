@@ -1,0 +1,163 @@
+<style>
+
+#symbol{
+    padding-top: 50px;
+    padding-left: 20.5%;
+    font-size: 30px;
+    color: rgb(100, 108, 126);
+    margin-bottom: 4px;
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 100%;
+    margin: 5 auto;
+    font-family: 'Helvetica Neue';
+    font-size: 12px;
+    background: rgb(115, 175, 253);
+    border-radius: 5px;
+}
+
+.container {
+    padding: 2px 16px;
+}
+
+.box {
+    width: 30%;
+    background: white;
+    text-align: left;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.5);
+    height: 90%;
+    overflow-y: scroll;
+    margin-bottom: 50px;
+    margin-left: 50px;
+
+}
+
+.summary{
+    background-color: white;
+    font-family: Raleway;
+    width: 60%;
+    margin-left: 20%;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.2);
+    border-width: 3px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    height: 14%;
+    margin-top: 3px;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.tbl{
+    width:100%;
+    margin:0 auto;
+    height: 100%;
+    align-self: center;
+
+    
+
+}
+
+table, th, td {
+  
+  border-collapse: collapse;
+  text-align: center;
+  table-layout: fixed;
+}
+
+#volume{
+    color:#6487ce;
+    font-size: 50px;
+}
+
+#current-price{
+    color:#a6e3c4;
+    font-size: 50px;
+}
+
+#daily-change{
+    color:#a6e3c4;
+    font-size: 50px;
+
+}
+
+#daily-high{
+    color:#58c5d9;
+    font-size: 50px;
+
+}
+
+#daily-low{
+    color:#de7673;
+    font-size: 50px;
+
+}
+
+.cell_border{
+    border-right: solid 1px red;
+}
+</style>
+
+{% extends 'layouts/base.html' %}
+
+{% block title %}Onyx-Dashboard{% endblock %}
+{% block meta_description %}Onyx stock dashboard{% endblock %}
+
+{% block body %}
+<body>
+    <p id="symbol">{{stock_info[0]}}</p>
+    <div class = "summary">
+        <table class="tbl">
+            <tr>
+                    <td class = "cell_border" id="current-price">&#36;</td>
+                    <td class = "cell_border" id="daily-change">&#8593;</td>
+                    <td class = "cell_border"id="daily-high">&#8593;</td>
+                    <td class = "cell_border"id="daily-low">&#8595;</td>
+                    <td id="volume">&#8644;</td>
+                    
+            </tr>
+
+            <tr>
+                    <td class = "cell_border">{{stock_info[1]}}</td>
+                    <td class = "cell_border">{{stock_info[2]}}</td>
+                    <td class = "cell_border">{{stock_info[3]}}</td>
+                    <td class = "cell_border">{{stock_info[4]}}</td>
+                    <td>{{stock_info[5]}}</td>
+            </tr>
+
+            <tr>
+                    <td class = "cell_border">Current Price</td>
+                    <td class = "cell_border">Daily Change</td>
+                    <td class = "cell_border">Daily High</td>
+                    <td class = "cell_border">Daily Low</td>
+                    <td>Todays Volume</td>
+            </tr>
+        </table>
+    </div>
+    <div class='box'>
+    {% for stockTwitsData in stockTwits_data %}
+        <div class="card">
+            <div class="container">
+                <p>
+                    {{ stockTwitsData.message }}
+                    <br>
+                    {{ stockTwitsData.sentiment }}
+                    <br>
+                    {{ stockTwitsData.username}}
+                </p>
+            </div>
+        </div>       
+                  
+    {% endfor %}
+    </div>
+
+</body>
+
+{% endblock %}
