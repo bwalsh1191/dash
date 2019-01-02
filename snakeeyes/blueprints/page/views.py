@@ -71,6 +71,7 @@ def dash():
         username = stockTwits['messages'][index]['user']['username']
         sentiment = str(stockTwits['messages'][index]['entities']['sentiment'])
         avatar = stockTwits['messages'][index]['user']['avatar_url_ssl']
+        #timestamp = stockTwits['messages'][index]['created_at'] #this is used for the time 
 
         if(sentiment == "{'basic': 'Bullish'}"):
             new_sent = 'Bullish'
