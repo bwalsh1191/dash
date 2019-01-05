@@ -132,7 +132,7 @@ table, th, td {
 }
 
 .cell_border{
-    border-right: solid 1px red;
+    border-right: solid 1px rgb(100, 108, 126);
 }
 
 .column {
@@ -243,7 +243,7 @@ img {
                             <tr>
                                 <td style="width: 10%"><img src= "{{ stockTwitsData.avatar }}" ></td>
                                 <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ stockTwitsData.username }}</b></span></td>
-                                <td id="date">Sept 21, 2018 @ 1:33pm</td>
+                                <td id="date">{{ stockTwitsData.timestamp }}</td>
                             </tr>
                             
                             <tr>
@@ -256,7 +256,7 @@ img {
                                 {% elif stockTwitsData.sentiment == 'Bearish' %}
                                 <td id="sent"><p style="color: rgb(234, 124, 121);">Bearish</p></td>
                                 {% else %}
-                                <td id="sent"><p style="color: rgb(100, 108, 126);">Neutral</p></td>
+                                <td id="sent"><p style="color: rgb(100, 108, 126);">---</p></td>
                                 {% endif %}
                             </tr>
                         </table>
@@ -296,7 +296,7 @@ img {
                                 {% elif stockTwitsData.sentiment == 'Bearish' %}
                                 <td id="sent"><p style="color: rgb(234, 124, 121);">Bearish</p></td>
                                 {% else %}
-                                <td id="sent"><p style="color: rgb(100, 108, 126);">Neutral</p></td>
+                                <td id="sent"><p style="color: rgb(100, 108, 126);">---</p></td>
                                 {% endif %}
                             </tr>
                         </table>
@@ -335,7 +335,7 @@ img {
                                         {% elif stockTwitsData.sentiment == 'Bearish' %}
                                         <td id="sent"><p style="color: rgb(234, 124, 121);">Bearish</p></td>
                                         {% else %}
-                                        <td id="sent"><p style="color: rgb(100, 108, 126);">Neutral</p></td>
+                                        <td id="sent"><p style="color: rgb(100, 108, 126);">---</p></td>
                                         {% endif %}
                                     </tr>
                                 </table>

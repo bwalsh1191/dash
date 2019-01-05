@@ -6,6 +6,8 @@ import html.parser as htmlparser
 from datetime import datetime
 import requests
 import pandas as pd
+import calendar
+from dateutil import tz
 
 
 #create a blueprint with a name of 'page'
@@ -71,7 +73,29 @@ def dash():
         username = stockTwits['messages'][index]['user']['username']
         sentiment = str(stockTwits['messages'][index]['entities']['sentiment'])
         avatar = stockTwits['messages'][index]['user']['avatar_url_ssl']
-        #timestamp = stockTwits['messages'][index]['created_at'] #this is used for the time 
+        tstamp = stockTwits['messages'][index]['created_at'] #this is used for the time 
+        new_tstamp = tstamp[0:10] + " " + tstamp[11:19]
+
+
+        from_zone = tz.gettz('UTC')
+        to_zone = tz.gettz('America/New_York')
+        utc = datetime.strptime(new_tstamp, '%Y-%m-%d %H:%M:%S')
+        utc = utc.replace(tzinfo=from_zone)
+        local = utc.astimezone(to_zone)
+
+        month = local.strftime("%b")
+        day = local.strftime("%d")
+        year = local.strftime("%Y")
+        hour = local.strftime("%I")
+        minutes = local.strftime("%M")
+        am_pm = local.strftime("%p")
+
+        pretty_date = month + " " + day + ", " + year + " @ " + hour + ":" + minutes + am_pm
+
+
+        #find a better way to do this for sure...
+
+
 
         if(sentiment == "{'basic': 'Bullish'}"):
             new_sent = 'Bullish'
@@ -91,6 +115,7 @@ def dash():
             'username' : username,
             'sentiment' : new_sent,
             'avatar' : avatar,
+            'timestamp' : pretty_date,
             
         }
         
