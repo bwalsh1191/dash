@@ -8,6 +8,10 @@ import requests
 import pandas as pd
 import calendar
 from dateutil import tz
+import tweepy
+from tweepy import OAuthHandler
+from tweepy import Stream
+from tweepy.streaming import StreamListener
 
 
 #create a blueprint with a name of 'page'
@@ -29,7 +33,7 @@ def dash():
     company = "Apple (AAPL)"
     
     #works but not for testing. Dont want to get rate limited
-
+    #--------------ALPHA VANTAGE STARTS HERE------------------
     ''' 
     url1 = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=' + symbol + '&outputsize=compact&datatype=csv&apikey=' + API_KEY
     url2 = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + symbol + '&interval=5min&datatype=csv&apikey=' + API_KEY
@@ -60,6 +64,9 @@ def dash():
     
     parser = htmlparser.HTMLParser()
 
+    #--------------ALPHA VANTAGE ENDS HERE------------------
+
+    #--------------STOCK TWITS STARTS HERE------------------
     
     url = 'https://api.stocktwits.com/api/2/streams/symbol/' + symbol + '.json'
 
@@ -121,19 +128,42 @@ def dash():
         
         stockTwits_data.append(stockTwitsData)
 
-    '''
-    stockTwits_data = []
+    
+    #--------------STOCK TWITS ENDS HERE------------------
 
-    for x in range (0,30):
+    #--------------TWITTER STARTS HERE------------------
+    CONSUMER_KEY = 'HJMjz0h6yKNm2hxA6NNFXP3B4'
+    CONSUMER_SECRET = 'hUvGlSFYCdeZsj0yMDrcmrXncWAt5bpnWOzFAvrF8fNvryu2Zx'
+    ACCESS_TOKEN = '753677018957504512-OKBKXJMomxUk8Zz0L4HQKUvPSYbQvyE'
+    ACCESS_SECRET = 'htvfswIINfuYfxxH546mun0OCPTIzESDNr7x5V4dCVgAR'
+
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
+
+    # Create the api to connect to twitter with your creadentials
+    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    tweets = []
+
+    #remove -filter:retweets to show retweets as well
+    for status in tweepy.Cursor(api.search,q="$AAPl -filter:retweets", tweet_mode='extended').items(30):
         
-        stockTwitsData = {
-            'message' : "I dont think that there is much for them to do with the stock from this point out. Not looking too good IMO",
-            'username' : "Brian",
-            'sentiment' : "Bullish",
-            'avatar' : "https://s3.amazonaws.com/st-avatars/images/default_avatar_thumb.jpg",
-            
+        tweet = status.full_text
+        username = status.user.screen_name
+        tweet_id = status.id_str
+        link = 'https://twitter.com/statuses/' + tweet_id
+        timestamp = status.created_at
+        avatar = status.user.profile_image_url_https
+
+        tweetData = {
+            'tweet' : tweet,
+            'username' : username,
+            'link' : link,
+            'avatar' : avatar,
+            'timestamp' : timestamp,
+                
         }
-        
-        stockTwits_data.append(stockTwitsData)
-    '''
-    return render_template('page/dash.1.html',stockTwits_data=stockTwits_data,stock_info=stock_info)
+            
+        tweets.append(tweetData)
+
+    #--------------TWITTER ENDS HERE------------------
+    return render_template('page/dash.1.html',stockTwits_data=stockTwits_data,stock_info=stock_info, tweets=tweets)

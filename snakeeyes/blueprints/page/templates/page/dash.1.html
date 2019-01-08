@@ -21,6 +21,7 @@
     border-radius: 5px;
     height: auto;
     margin: 5 auto;
+    
 }
 
 .card_red {
@@ -33,6 +34,7 @@
     border-radius: 5px;
     height: auto;
     margin: 5 auto;
+   
 
 }
 
@@ -47,6 +49,7 @@
     border-radius: 5px;
     height: auto;
     margin: 5 auto;
+    
 }
 
 
@@ -179,6 +182,7 @@ img {
 	color: rgb(100, 108, 126);
     text-align: left;
     padding-left: 3px;
+    word-wrap: break-word;
 }
 
 #sent {
@@ -270,34 +274,22 @@ img {
     <div class="column">
             <p style="color: rgb(100, 108, 126);">Twitter</p>
             <div class='box'>
-            {% for stockTwitsData in stockTwits_data %}
-
-                {% if stockTwitsData.sentiment == 'Bullish' %}
-                    <div class="card_green">
-                {% elif stockTwitsData.sentiment == 'Bearish' %}
-                    <div class="card_red">
-                {% else %}
+            {% for tweet in tweets %}
                     <div class="card_neutral">
-                {% endif %}
                         <table style="width: 100%">
                             <tr>
-                                <td style="width: 10%"><img src= "{{ stockTwitsData.avatar }}" ></td>
-                                <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ stockTwitsData.username }}</b></span></td>
+                                <td style="width: 10%"><img src= "{{ tweet.avatar }}" ></td>
+                                <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ tweet.username }}</b></span></td>
                                 <td id="date">Sept 21, 2018 @ 1:33pm</td>
                             </tr>
                             
                             <tr>
-                                <td colspan="3" id="message"><br> {{ stockTwitsData.message }} <br><br></td>
+                                <td colspan="3" id="message"><br> {{ tweet.tweet }} <br><br></td>
                             </tr>
                             
                             <tr>
-                                {% if stockTwitsData.sentiment == 'Bullish' %}
-                                <td id="sent"><p style="color: rgb(166, 227, 196);">Bullish</p></td>
-                                {% elif stockTwitsData.sentiment == 'Bearish' %}
-                                <td id="sent"><p style="color: rgb(234, 124, 121);">Bearish</p></td>
-                                {% else %}
-                                <td id="sent"><p style="color: rgb(100, 108, 126);">---</p></td>
-                                {% endif %}
+                                <td id="sent"><a href="{{ tweet.link }}" target="_blank" style="text-decoration: none; color: rgb(100, 108, 126)"> View</a></td>
+                                
                             </tr>
                         </table>
                     </div>       
