@@ -301,41 +301,29 @@ img {
             <p style="color: rgb(100, 108, 126);">News</p>
 
             <div class='box'>
-                    {% for stockTwitsData in stockTwits_data %}
-        
-                        {% if stockTwitsData.sentiment == 'Bullish' %}
-                            <div class="card_green">
-                        {% elif stockTwitsData.sentiment == 'Bearish' %}
-                            <div class="card_red">
-                        {% else %}
-                            <div class="card_neutral">
-                        {% endif %}
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td style="width: 10%"><img src= "{{ stockTwitsData.avatar }}" ></td>
-                                        <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ stockTwitsData.username }}</b></span></td>
-                                        <td id="date">Sept 21, 2018 @ 1:33pm</td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td colspan="3" id="message"><br> {{ stockTwitsData.message }} <br><br></td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        {% if stockTwitsData.sentiment == 'Bullish' %}
-                                        <td id="sent"><p style="color: rgb(166, 227, 196);">Bullish</p></td>
-                                        {% elif stockTwitsData.sentiment == 'Bearish' %}
-                                        <td id="sent"><p style="color: rgb(234, 124, 121);">Bearish</p></td>
-                                        {% else %}
-                                        <td id="sent"><p style="color: rgb(100, 108, 126);">---</p></td>
-                                        {% endif %}
-                                    </tr>
-                                </table>
-                            </div>
-                                    
-                    {% endfor %}
-                    </div>
-    </div>
+                {% for news in news_list %}
+                <div class="card_neutral">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 10%"><img src= "{{ news.picture }}" ></td>
+                            <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ news.source }}</b></span></td>
+                            <td id="date">Sept 21, 2018 @ 1:33pm</td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="3" id="message"><br> {{ news.headline }} <br><br></td>
+                        </tr>
+                        
+                        <tr>
+                            <td id="sent"><a href="{{ news.link }}" target="_blank" style="text-decoration: none; color: rgb(100, 108, 126)"> View</a></td>
+                            
+                        </tr>
+                    </table>
+                </div>       
+                        
+                {% endfor %}
+            </div>
+        </div>
     </div>
     
 

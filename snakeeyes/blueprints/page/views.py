@@ -132,6 +132,8 @@ def dash():
     #--------------STOCK TWITS ENDS HERE------------------
 
     #--------------TWITTER STARTS HERE------------------
+    #***THIS WORKS BUT DONT USE FOR TESTING PURPOSES**
+    '''
     CONSUMER_KEY = 'HJMjz0h6yKNm2hxA6NNFXP3B4'
     CONSUMER_SECRET = 'hUvGlSFYCdeZsj0yMDrcmrXncWAt5bpnWOzFAvrF8fNvryu2Zx'
     ACCESS_TOKEN = '753677018957504512-OKBKXJMomxUk8Zz0L4HQKUvPSYbQvyE'
@@ -153,7 +155,7 @@ def dash():
         link = 'https://twitter.com/statuses/' + tweet_id
         timestamp = status.created_at
         avatar = status.user.profile_image_url_https
-
+    
         tweetData = {
             'tweet' : tweet,
             'username' : username,
@@ -164,6 +166,60 @@ def dash():
         }
             
         tweets.append(tweetData)
+        '''
+    tweets = []
+    for x in range(0,30):
+        tweetData = {
+            'tweet' : "tweet",
+            'username' : "username",
+            'link' : "link",
+            'avatar' : "picture",
+            'timestamp' : "time",
+                
+        }
+            
+        tweets.append(tweetData)
 
     #--------------TWITTER ENDS HERE------------------
-    return render_template('page/dash.1.html',stockTwits_data=stockTwits_data,stock_info=stock_info, tweets=tweets)
+
+
+    #--------------NEWS STARTS HERE------------------
+
+
+    url = 'https://api.iextrading.com/1.0/stock/aapl/batch?types=news&last=30'
+    news = requests.get(url)
+    news_json_str = news.content
+    news_data = json.loads(news_json_str)
+    length = len(news_data['news'])
+
+    news_list = []
+    #parses the JSON
+    for x in range(0,length):
+        
+        
+        source = news_data['news'][x]['source']
+        date = news_data['news'][x]['datetime']
+        headline = news_data['news'][x]['headline']
+        link = news_data['news'][x]['url']
+
+        if source == 'CNBC':
+            picture_url = 'https://cdn1.imggmi.com/uploads/2019/1/9/d6b0a8f08229d55f4b82e48d91f10932-full.jpg'
+        
+        elif source == 'SeekingAlpha':
+            picture_url = 'https://cdn1.imggmi.com/uploads/2019/1/9/db89b16f38e5c6d934f7fcef2c9f73ff-full.jpg'
+        
+        else:
+            picture_url = 'https://cdn1.imggmi.com/uploads/2019/1/9/182b35b6d20d197ce00ffbec8ca5573a-full.jpg'
+
+        news_dict = {
+            'picture': picture_url,
+            'source' : source,
+            'date' : date,
+            'headline' : headline,
+            'link' : link
+        }
+        
+        news_list.append(news_dict)
+
+    #--------------NEWS ENDS HERE------------------
+    return render_template('page/dash.1.html',stockTwits_data=stockTwits_data,stock_info=stock_info, tweets=tweets, news_list=news_list)
