@@ -18,29 +18,70 @@
           font-family: 'Raleway'; 
         }
 
-        header{
-          background-color: rgb(100, 108, 126);
-          width: 100%;
-          height: 80px;
-        }
+        
 
         h1.onyx{
           color: white;
           font-family: Raleway; 
           font-size: auto; 
-          padding: 20px 0px 0px 50px; 
+          padding: 20px 0px 0px 50px;
+          text-align: left;
+        
 
         }
+
+      
+
+    #search {
+      height: auto;
+      padding: 20px 10px 0px 50px;
+      text-align: right;
+    }
+
+    #head{
+      width:100%;
+      background-color: rgb(100, 108, 126);
+      width: 100%;
+      height: 80px;
+    }
+
+    #input {
+      border-radius: 5px;
+      border-color: rgba(0,0,0,0)
+    }
     </style>
     <!-- The block title section  section is used for Jinja. it allows us to use the contents from somewhere else. 
       its pretty much a temaplte and will auto chane the data based on the JINJA template-->
     <title>{% block title %}{% endblock %}</title>
+    <!-- This will refresh the page every 60 seconds 
+      its pretty much a temaplte and will auto chane the data based on the JINJA template-->
+    <meta http-equiv="refresh" content="6000">
   </head>
   <header>
-      <div>
-        <h1 class="onyx">Onyx</h1>
+    <table id="head">
+      <tr>
+        <td><h1 class="onyx">Onyx</h1></td>
+        <td id="search">
+          <form method="POST">
+            
+                
+            <input id="input" name="symbol" type="text" placeholder="Enter a Symbol">
         
-      </div>
+        
+            <button class="button is-info">
+                Search
+            </button>
+            </form>
+          </td>
+      </tr>
+     </table>
+        
+     
     </header>
   <body>{% block body %}{% endblock %}</body>
+  <script>
+    function myFunction() {
+      window.location.reload();;
+    }
+    </script>
 </html>

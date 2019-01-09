@@ -1,6 +1,6 @@
 
 #instead of importing flask, we import blueprint
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 import json
 import html.parser as htmlparser
 from datetime import datetime
@@ -25,12 +25,18 @@ def home():
     return render_template('page/home.html')
 
 
-@page.route('/dash')
+@page.route('/dash', methods=['GET', 'POST'])
 def dash():
 
+    symbol ="aapl"
+    if request.method == 'POST':
+        symbol = request.form.get('symbol')
+
+    
     API_KEY = '4HNDQOUQ2A1G90RW'
-    symbol = 'AAPL'
-    company = "Apple (AAPL)"
+    symbol_upper = symbol.upper()
+    symbol_lower = symbol.lower()
+    company = symbol_upper
     
     #works but not for testing. Dont want to get rate limited
     #--------------ALPHA VANTAGE STARTS HERE------------------
@@ -68,9 +74,9 @@ def dash():
 
     #--------------STOCK TWITS STARTS HERE------------------
     
-    url = 'https://api.stocktwits.com/api/2/streams/symbol/' + symbol + '.json'
+    url = 'https://api.stocktwits.com/api/2/streams/symbol/' + symbol_lower + '.json'
 
-    stockTwits = requests.get(url.format(symbol)).json()
+    stockTwits = requests.get(url.format(symbol_lower)).json()
     stockTwits_data = []
     new_sent = ''
 
@@ -186,7 +192,7 @@ def dash():
     #--------------NEWS STARTS HERE------------------
 
 
-    url = 'https://api.iextrading.com/1.0/stock/aapl/batch?types=news&last=30'
+    url = 'https://api.iextrading.com/1.0/stock/' + symbol_lower + '/batch?types=news&last=30'
     news = requests.get(url)
     news_json_str = news.content
     news_data = json.loads(news_json_str)
