@@ -24,6 +24,12 @@ def home():
     #renders a html template instead 
     return render_template('page/home.html')
 
+@page.route('/charts')
+def charts():
+
+    #renders a html template instead 
+    return render_template('page/charts.html')
+
 
 @page.route('/dash', methods=['GET', 'POST'])
 def dash():
@@ -139,11 +145,13 @@ def dash():
 
     #--------------TWITTER STARTS HERE------------------
     #***THIS WORKS BUT DONT USE FOR TESTING PURPOSES**
+
+    #*** START FOR LIVE TWITTER ***
     '''
-    CONSUMER_KEY = 'HJMjz0h6yKNm2hxA6NNFXP3B4'
-    CONSUMER_SECRET = 'hUvGlSFYCdeZsj0yMDrcmrXncWAt5bpnWOzFAvrF8fNvryu2Zx'
-    ACCESS_TOKEN = '753677018957504512-OKBKXJMomxUk8Zz0L4HQKUvPSYbQvyE'
-    ACCESS_SECRET = 'htvfswIINfuYfxxH546mun0OCPTIzESDNr7x5V4dCVgAR'
+    CONSUMER_KEY = ''
+    CONSUMER_SECRET = ''
+    ACCESS_TOKEN = ''
+    ACCESS_SECRET = ''
 
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
@@ -153,7 +161,8 @@ def dash():
     tweets = []
 
     #remove -filter:retweets to show retweets as well
-    for status in tweepy.Cursor(api.search,q="$AAPl -filter:retweets", tweet_mode='extended').items(30):
+    querey = "$" + symbol_upper + " -filter:retweets"
+    for status in tweepy.Cursor(api.search,q=querey, tweet_mode='extended').items(30):
         
         tweet = status.full_text
         username = status.user.screen_name
@@ -172,7 +181,11 @@ def dash():
         }
             
         tweets.append(tweetData)
-        '''
+    '''
+    #*** END FOR LIVE TWITTER ***
+
+    #*** START FOR TESTING TWITTER ***
+    
     tweets = []
     for x in range(0,30):
         tweetData = {
@@ -185,6 +198,8 @@ def dash():
         }
             
         tweets.append(tweetData)
+    
+    #*** END FOR TESTING TWITTER ***
 
     #--------------TWITTER ENDS HERE------------------
 
@@ -228,4 +243,4 @@ def dash():
         news_list.append(news_dict)
 
     #--------------NEWS ENDS HERE------------------
-    return render_template('page/dash.1.html',stockTwits_data=stockTwits_data,stock_info=stock_info, tweets=tweets, news_list=news_list)
+    return render_template('page/dash.html',stockTwits_data=stockTwits_data,stock_info=stock_info, tweets=tweets, news_list=news_list)

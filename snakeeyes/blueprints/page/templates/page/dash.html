@@ -1,4 +1,6 @@
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />
 <style>
+    
 
 #symbol{
     padding-top: 50px;
@@ -7,41 +9,71 @@
     color: rgb(100, 108, 126);
     margin-bottom: 4px;
 }
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    width: auto;
-    margin: 5 auto;
-    height: auto;
-    font-size: 12px;
-    background: rgb(115, 175, 253);
-    border-radius: 5px;
+
+.card_neutral {
+
     border-style: solid;
     border-width: 2px;
-    border-color: rgb(36,132,243);
+    border-color: rgb(140,149,176);
+    width: auto;
+    font-family: Raleway;
+    font-size: 12px;
+    border-radius: 5px;
+    height: auto;
+    margin: 5 auto;
+    
 }
 
-.container {
-    padding: 2px 16px;
+.card_red {
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(234,124,121);
+    width: auto;
+    font-family: Raleway;
+    font-size: 12px;
+    border-radius: 5px;
+    height: auto;
+    margin: 5 auto;
+   
+
 }
+
+.card_green {
+
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(166,227,196);
+    width: auto;
+    font-family: Raleway;
+    font-size: 12px;
+    border-radius: 5px;
+    height: auto;
+    margin: 5 auto;
+    
+}
+
+
 
 .box {
-    width: 30%;
+    width: 80%;
     background: white;
     text-align: left;
     padding: 5px 5px 5px 5px;
     border-radius: 5px;
     border-style: solid;
-    border-color: rgba(0,0,0,0.5);
+    border-width: 2px;
+    border-color: rgba(0,0,0,0.3);
     height: 90%;
     overflow-y: scroll;
     margin-bottom: 50px;
     margin-left: 50px;
+    font-family: Raleway;
 
 }
 
 .summary{
-    background-color: white;
-    
+    background-color: blueite;
+    font-family: Raleway;
     width: 60%;
     margin-left: 20%;
     border-style: solid;
@@ -54,6 +86,7 @@
     margin-bottom: 100px;
     display: flex;
     justify-content: center;
+    color: rgb(100, 108, 126);
 
 }
 
@@ -63,8 +96,6 @@
     height: 100%;
     align-self: center;
 
-    
-
 }
 
 table, th, td {
@@ -72,6 +103,7 @@ table, th, td {
   border-collapse: collapse;
   text-align: center;
   table-layout: fixed;
+  
 }
 
 #volume{
@@ -103,17 +135,75 @@ table, th, td {
 }
 
 .cell_border{
-    border-right: solid 1px red;
+    border-right: solid 1px rgb(100, 108, 126);
 }
+
+.column {
+  float: left;
+  width: 33.33%;
+  text-align: center;
+  
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+#username {
+  font-weight: bold;
+  height: 10px;
+  width: 200px;
+  text-align:left;
+  color: rgb(100, 108, 126)
+  
+}
+
+img {
+  border-radius: 50%;
+  width:40px;
+  padding-top: 2px;
+  padding-left: 0px;
+
+}
+
+
+#date {
+    text-align:right;
+    width: 45%;
+    color: rgb(100, 108, 126)
+
+}
+
+#message {
+	color: rgb(100, 108, 126);
+    text-align: left;
+    padding-left: 3px;
+    word-wrap: break-word;
+}
+
+#sent {
+	color: rgb(100, 108, 126);
+    padding-left: 3px;
+}
+
 </style>
 
 {% extends 'layouts/base.html' %}
 
-{% block title %}Onyx-Dasshboard{% endblock %}
+{% block title %}Onyx-Dashboard{% endblock %}
 {% block meta_description %}Onyx stock dashboard{% endblock %}
 
 {% block body %}
 <body>
+    <div style="text-align: center">
+        <p>--Dash--</p>
+        <a href="charts" style="text-decoration: none; color: rgb(100, 108, 126)">Charts</a>
+
+    </div>
     <p id="symbol">{{stock_info[0]}}</p>
     <div class = "summary">
         <table class="tbl">
@@ -143,22 +233,104 @@ table, th, td {
             </tr>
         </table>
     </div>
-    <div class='box'>
-    {% for stockTwitsData in stockTwits_data %}
-        <div class="card">
-            <div class="container">
-                <p>
-                    {{ stockTwitsData.message }}
-                    <br>
-                    {{ stockTwitsData.sentiment }}
-                    <br>
-                    {{ stockTwitsData.username}}
-                </p>
+
+
+<div class="row">
+    <div class="column">
+            <p style="color: rgb(100, 108, 126);">Stock Twits</p>
+        <div class='box'>
+            {% for stockTwitsData in stockTwits_data %}
+
+                {% if stockTwitsData.sentiment == 'Bullish' %}
+                    <div class="card_green">
+                {% elif stockTwitsData.sentiment == 'Bearish' %}
+                    <div class="card_red">
+                {% else %}
+                    <div class="card_neutral">
+                {% endif %}
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 10%"><img src= "{{ stockTwitsData.avatar }}" ></td>
+                                <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ stockTwitsData.username }}</b></span></td>
+                                <td id="date">{{ stockTwitsData.timestamp }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="3" id="message"><br> {{ stockTwitsData.message }} <br><br></td>
+                            </tr>
+                            
+                            <tr>
+                                {% if stockTwitsData.sentiment == 'Bullish' %}
+                                <td id="sent"><p style="color: rgb(166, 227, 196);">Bullish</p></td>
+                                {% elif stockTwitsData.sentiment == 'Bearish' %}
+                                <td id="sent"><p style="color: rgb(234, 124, 121);">Bearish</p></td>
+                                {% else %}
+                                <td id="sent"><p style="color: rgb(100, 108, 126);">---</p></td>
+                                {% endif %}
+                            </tr>
+                        </table>
+                    </div>
+                            
+            {% endfor %}
             </div>
-        </div>       
-                  
-    {% endfor %}
     </div>
+
+    
+    <div class="column">
+            <p style="color: rgb(100, 108, 126);">Twitter</p>
+            <div class='box'>
+            {% for tweet in tweets %}
+                    <div class="card_neutral">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 10%"><img src= "{{ tweet.avatar }}" ></td>
+                                <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ tweet.username }}</b></span></td>
+                                <td id="date">Sept 21, 2018 @ 1:33pm</td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="3" id="message"><br> {{ tweet.tweet }} <br><br></td>
+                            </tr>
+                            
+                            <tr>
+                                <td id="sent"><a href="{{ tweet.link }}" target="_blank" style="text-decoration: none; color: rgb(100, 108, 126)"> View</a></td>
+                                
+                            </tr>
+                        </table>
+                    </div>       
+                            
+            {% endfor %}
+            </div>
+    </div>
+    <div class="column">
+            <p style="color: rgb(100, 108, 126);">News</p>
+
+            <div class='box'>
+                {% for news in news_list %}
+                <div class="card_neutral">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 10%"><img src= "{{ news.picture }}" ></td>
+                            <td id="username" style="width: 30%"><span style="margin-left: 0px;"><b>{{ news.source }}</b></span></td>
+                            <td id="date">Sept 21, 2018 @ 1:33pm</td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="3" id="message"><br> {{ news.headline }} <br><br></td>
+                        </tr>
+                        
+                        <tr>
+                            <td id="sent"><a href="{{ news.link }}" target="_blank" style="text-decoration: none; color: rgb(100, 108, 126)"> View</a></td>
+                            
+                        </tr>
+                    </table>
+                </div>       
+                        
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
 
 </body>
 
